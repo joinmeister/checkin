@@ -89,3 +89,18 @@ flutter_01.log
 
 # macOS
 .DS_Store
+
+# Apple certificates and keys (NEVER commit these!)
+*.p8
+*.p12
+*.mobileprovision
+*.cer
+*.certSigningRequest
+AuthKey_*.p8
+ios_distribution.cer
+ios_development.cer
+
+# Environment files with secrets
+.env
+.env.local
+secrets.yaml
