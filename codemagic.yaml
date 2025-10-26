@@ -1,0 +1,144 @@
+workflows:
+  ios-workflow:
+    name: iOS Build
+    max_build_duration: 120
+    instance_type: mac_mini_m1
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.joinmeister.silentprintbrowser
+      vars:
+        XCODE_WORKSPACE: "ios/Runner.xcworkspace"
+        XCODE_SCHEME: "Runner"
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Set up code signing settings on Xcode project
+        script: |
+          xcode-project use-profiles
+      - name: Get Flutter packages
+        script: |
+          flutter packages pub get
+      - name: Install pods
+        script: |
+          find . -name "Podfile" -execdir pod install \;
+      - name: Flutter build ipa
+        script: |
+          flutter build ipa --release \
+            --export-options-plist=/Users/builder/export_options.plist
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - admin@joinmeister.com
+        notify:
+          success: true
+          failure: true
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+
+  android-workflow:
+    name: Android Build
+    max_build_duration: 120
+    instance_type: linux_x2
+    environment:
+      android_signing:
+        - joinmeister_keystore
+      groups:
+        - google_play
+      vars:
+        PACKAGE_NAME: "com.joinmeister.silentprintbrowser"
+      flutter: stable
+      java: 11
+    scripts:
+      - name: Set up local.properties
+        script: |
+          echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
+      - name: Get Flutter packages
+        script: |
+          flutter packages pub get
+      - name: Build AAB with Flutter
+        script: |
+          flutter build appbundle --release
+      - name: Build APK with Flutter
+        script: |
+          flutter build apk --release
+    artifacts:
+      - build/**/outputs/**/*.aab
+      - build/**/outputs/**/*.apk
+      - build/**/outputs/**/mapping.txt
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - admin@joinmeister.com
+        notify:
+          success: true
+          failure: true
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+        in_app_update_priority: 0
+
+  web-workflow:
+    name: Web Build
+    max_build_duration: 60
+    instance_type: linux
+    environment:
+      flutter: stable
+    scripts:
+      - name: Get Flutter packages
+        script: |
+          flutter packages pub get
+      - name: Build web
+        script: |
+          flutter build web --release --web-renderer canvaskit
+    artifacts:
+      - build/web/**
+    publishing:
+      email:
+        recipients:
+          - admin@joinmeister.com
+        notify:
+          success: true
+          failure: true
+
+  development-workflow:
+    name: Development Build (Debug)
+    max_build_duration: 60
+    instance_type: linux
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'develop'
+          include: true
+          source: true
+    environment:
+      flutter: stable
+    scripts:
+      - name: Get Flutter packages
+        script: |
+          flutter packages pub get
+      - name: Run tests
+        script: |
+          flutter test
+        ignore_failure: true
+      - name: Analyze code
+        script: |
+          flutter analyze
+        ignore_failure: true
+    publishing:
+      email:
+        recipients:
+          - admin@joinmeister.com
+        notify:
+          success: false
+          failure: true
+
