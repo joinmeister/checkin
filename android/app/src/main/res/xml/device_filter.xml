@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brother Printer USB Vendor IDs -->
+    <usb-device vendor-id="1273" /> <!-- Brother Industries -->
+    <usb-device vendor-id="04F9" /> <!-- Brother Industries (alternative) -->
+</resources>

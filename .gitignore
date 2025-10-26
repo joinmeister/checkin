@@ -1,0 +1,91 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Brother SDK - Large binary files (don't commit to git)
+bpsdki4130/
+bpsdkiall4130/
+bpsdkiall4130.zip
+ios/Frameworks/
+ios/Pods/
+
+# iOS build artifacts
+ios/Flutter/
+*.xcworkspace
+ios/Podfile.lock
+
+# Temporary documentation files
+BUILD_FIX_SUMMARY.md
+FINAL_SIMULATOR_COMPATIBILITY_REPORT.md
+IOS_CRASH_FIXES.md
+IOS_WHITE_SCREEN_FIX.md
+IOS_WHITE_SCREEN_FIX_SUMMARY.md
+PLUGIN_COMPILATION_FIX.md
+SIMULATOR_COMPATIBILITY_FINAL_STATUS.md
+SIMULATOR_COMPATIBILITY_STATUS.md
+VIRTUALIZED_MACOS_ISSUES.md
+ios/SIMULATOR_BUILD_GUIDE.md
+fix-ios-white-screen.plan.md
+
+# Log files
+*.log
+console.log
+ios_run_log.txt
+flutter_01.log
+
+# Backup files
+*.bak
+*.swp
+*.old
+
+# Patch files
+*.patch
+
+# VS Code settings
+.vscode/
+
+# macOS
+.DS_Store
